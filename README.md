@@ -26,7 +26,7 @@ const token = "<YOUR API TOKEN>"
 func main() {  
   api := spotify.NewAPI(token)
   
-  if err := api.Play(""); err != nil {
+  if err := api.Play(); err != nil {
     panic(err)
   }
   
