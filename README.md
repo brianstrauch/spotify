@@ -30,7 +30,7 @@ func main() {
     panic(err)
   }
   
-  playback, err := api.Status()
+  playback, err := api.GetPlayback()
   if err != nil {
     panic(err)
   }

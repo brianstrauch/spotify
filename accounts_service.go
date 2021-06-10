@@ -6,18 +6,25 @@ import (
 	"encoding/base64"
 	"encoding/binary"
 	"encoding/json"
+	"io"
 	"math/rand"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/brianstrauch/spotify/model"
 )
 
 const (
-	AccountsAPIBaseURL = "https://accounts.spotify.com"
-	ClientID           = "81dddfee3e8d47d89b7902ba616f3357"
+	AccountsBaseURL = "https://accounts.spotify.com"
+	ClientID        = "81dddfee3e8d47d89b7902ba616f3357"
 )
+
+type Token struct {
+	AccessToken  string `json:"access_token"`
+	TokenType    string `json:"token_type"`
+	ExpiresIn    int    `json:"expires_in"`
+	RefreshToken string `json:"refresh_token"`
+	Scope        string `json:"scope"`
+}
 
 func StartProof() (string, string, error) {
 	verifier, err := generateRandomVerifier()
@@ -71,10 +78,10 @@ func BuildAuthURI(redirectURI, challenge, state string, scope string) string {
 	q.Add("state", state)
 	q.Add("scope", scope)
 
-	return AccountsAPIBaseURL + "/authorize?" + q.Encode()
+	return AccountsBaseURL + "/authorize?" + q.Encode()
 }
 
-func RequestToken(code, redirectURI, verifier string) (*model.Token, error) {
+func RequestToken(code, redirectURI, verifier string) (*Token, error) {
 	v := url.Values{}
 	v.Set("client_id", ClientID)
 	v.Set("grant_type", "authorization_code")
@@ -83,30 +90,21 @@ func RequestToken(code, redirectURI, verifier string) (*model.Token, error) {
 	v.Set("code_verifier", verifier)
 	body := strings.NewReader(v.Encode())
 
-	res, err := http.Post(AccountsAPIBaseURL+"/api/token", "application/x-www-form-urlencoded", body)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-
-	// TODO: Handle errors
-
-	token := new(model.Token)
-	if err := json.NewDecoder(res.Body).Decode(token); err != nil {
-		return nil, err
-	}
-
-	return token, nil
+	return postToken(body)
 }
 
-func RefreshToken(refreshToken string) (*model.Token, error) {
+func RefreshToken(refreshToken string) (*Token, error) {
 	v := url.Values{}
 	v.Set("grant_type", "refresh_token")
 	v.Set("refresh_token", refreshToken)
 	v.Set("client_id", ClientID)
 	body := strings.NewReader(v.Encode())
 
-	res, err := http.Post(AccountsAPIBaseURL+"/api/token", "application/x-www-form-urlencoded", body)
+	return postToken(body)
+}
+
+func postToken(body io.Reader) (*Token, error) {
+	res, err := http.Post(AccountsBaseURL+"/api/token", "application/x-www-form-urlencoded", body)
 	if err != nil {
 		return nil, err
 	}
@@ -114,10 +112,8 @@ func RefreshToken(refreshToken string) (*model.Token, error) {
 
 	// TODO: Handle errors
 
-	token := new(model.Token)
-	if err := json.NewDecoder(res.Body).Decode(token); err != nil {
-		return nil, err
-	}
+	token := new(Token)
+	err = json.NewDecoder(res.Body).Decode(token)
 
-	return token, nil
+	return token, err
 }

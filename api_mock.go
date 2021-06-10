@@ -1,22 +1,22 @@
 package spotify
 
-import (
-	"github.com/brianstrauch/spotify/model"
-	"github.com/stretchr/testify/mock"
-)
+import "github.com/stretchr/testify/mock"
 
 type MockAPI struct {
 	mock.Mock
 }
 
-func (m *MockAPI) Back() error {
+func (m *MockAPI) GetPlayback() (*Playback, error) {
 	args := m.Called()
-	return args.Error(0)
-}
 
-func (m *MockAPI) Next() error {
-	args := m.Called()
-	return args.Error(0)
+	playback := args.Get(0)
+	err := args.Error(1)
+
+	if playback == nil {
+		return nil, err
+	}
+
+	return playback.(*Playback), err
 }
 
 func (m *MockAPI) Pause() error {
@@ -24,8 +24,8 @@ func (m *MockAPI) Pause() error {
 	return args.Error(0)
 }
 
-func (m *MockAPI) Play(uri string) error {
-	args := m.Called(uri)
+func (m *MockAPI) Play(uris ...string) error {
+	args := m.Called(uris)
 	return args.Error(0)
 }
 
@@ -34,18 +34,23 @@ func (m *MockAPI) Queue(uri string) error {
 	return args.Error(0)
 }
 
+func (m *MockAPI) RemoveSavedTracks(ids ...string) error {
+	args := m.Called(ids)
+	return args.Error(0)
+}
+
 func (m *MockAPI) Repeat(state string) error {
 	args := m.Called(state)
 	return args.Error(0)
 }
 
-func (m *MockAPI) Save(id string) error {
-	args := m.Called(id)
+func (m *MockAPI) SaveTracks(ids ...string) error {
+	args := m.Called(ids)
 	return args.Error(0)
 }
 
-func (m *MockAPI) Search(queue string, limit int) (*model.Page, error) {
-	args := m.Called(queue, limit)
+func (m *MockAPI) Search(q string, limit int) (*Paging, error) {
+	args := m.Called(q, limit)
 
 	page := args.Get(0)
 	err := args.Error(1)
@@ -54,7 +59,7 @@ func (m *MockAPI) Search(queue string, limit int) (*model.Page, error) {
 		return nil, err
 	}
 
-	return page.(*model.Page), err
+	return page.(*Paging), err
 }
 
 func (m *MockAPI) Shuffle(state bool) error {
@@ -62,33 +67,12 @@ func (m *MockAPI) Shuffle(state bool) error {
 	return args.Error(0)
 }
 
-func (m *MockAPI) Status() (*model.Playback, error) {
+func (m *MockAPI) SkipToNextTrack() error {
 	args := m.Called()
-
-	playback := args.Get(0)
-	err := args.Error(1)
-
-	if playback == nil {
-		return nil, err
-	}
-
-	return playback.(*model.Playback), err
-}
-
-func (m *MockAPI) Unsave(id string) error {
-	args := m.Called(id)
 	return args.Error(0)
 }
 
-func (m *MockAPI) WaitForUpdatedPlayback(isUpdated func(playback *model.Playback) bool) (*model.Playback, error) {
-	args := m.Called(isUpdated)
-
-	playback := args.Get(0)
-	err := args.Error(1)
-
-	if playback == nil {
-		return nil, err
-	}
-
-	return playback.(*model.Playback), err
+func (m *MockAPI) SkipToPreviousTrack() error {
+	args := m.Called()
+	return args.Error(0)
 }
