@@ -18,20 +18,6 @@ type Error struct {
 	} `json:"error"`
 }
 
-type APIInterface interface {
-	GetPlayback() (*Playback, error)
-	Pause() error
-	Play(uris ...string) error
-	Queue(uri string) error
-	RemoveSavedTracks(ids ...string) error
-	Repeat(state string) error
-	SaveTracks(ids ...string) error
-	Search(q string, limit int) (*Paging, error)
-	Shuffle(state bool) error
-	SkipToNextTrack() error
-	SkipToPreviousTrack() error
-}
-
 type API struct {
 	token string
 }
@@ -57,7 +43,7 @@ func (a *API) delete(endpoint string) error {
 }
 
 func (a *API) call(method string, endpoint string, body io.Reader, result interface{}) error {
-	req, err := http.NewRequest(method, BaseURL+ endpoint, body)
+	req, err := http.NewRequest(method, BaseURL+endpoint, body)
 	if err != nil {
 		return err
 	}

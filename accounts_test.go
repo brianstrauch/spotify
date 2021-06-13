@@ -7,8 +7,8 @@ import (
 	"testing"
 )
 
-func TestStartProof(t *testing.T) {
-	verifier, challenge, err := StartProof()
+func TestCreateVerifierAndChallenge(t *testing.T) {
+	verifier, challenge, err := CreateVerifierAndChallenge()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -27,16 +27,17 @@ func TestStartProof(t *testing.T) {
 
 func TestBuildAuthURI(t *testing.T) {
 	var (
+		clientID    = "client"
 		redirectURI = "http://localhost:1024"
 		challenge   = "challenge"
 		state       = "state"
 		scope       = "user-modify-playback-state"
 	)
 
-	uri := BuildAuthURI(redirectURI, challenge, state, scope)
+	uri := BuildAuthURI(clientID, redirectURI, challenge, state, scope)
 
 	substrings := []string{
-		"client_id=" + ClientID,
+		"client_id=" + clientID,
 		"response_type=code",
 		"redirect_uri=" + url.QueryEscape(redirectURI),
 		"code_challenge_method=S256",
