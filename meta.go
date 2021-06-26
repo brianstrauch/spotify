@@ -5,22 +5,19 @@ import (
 	"strings"
 )
 
-type HREF struct {
-	*url.URL
-}
+type HREF string
 
 func (h *HREF) Get(api *API, obj interface{}) error {
-	path := strings.Replace(h.Path, "/v1", "", 1)
-	return api.get(path, obj)
-}
-
-func (h *HREF) UnmarshalJSON(data []byte) error {
-	u, err := url.Parse(string(data[1 : len(data)-1]))
+	url, err := h.GetURL()
 	if err != nil {
 		return err
 	}
-	h.URL = u
-	return nil
+	path := strings.Replace(url.Path, "/v1", "", 1)
+	return api.get(path, obj)
+}
+
+func (h *HREF) GetURL() (*url.URL, error) {
+	return url.Parse(string(*h))
 }
 
 type Meta struct {
