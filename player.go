@@ -32,7 +32,7 @@ type Show struct {
 	Name string `json:"name"`
 }
 
-// Get information about the user’s current playback state, including track or episode, progress, and active device.
+// GetPlayback gets information about the user's current playback state, including track or episode, progress, and active device.
 func (a *API) GetPlayback() (*Playback, error) {
 	v := url.Values{}
 	v.Add("additional_types", "episode")
@@ -43,12 +43,12 @@ func (a *API) GetPlayback() (*Playback, error) {
 	return playback, err
 }
 
-// Pause playback on the user’s account.
+// Pause pauses playback on the user's account.
 func (a *API) Pause() error {
 	return a.put("/me/player/pause", nil)
 }
 
-// Start a new context or resume current playback on the user’s active device.
+// Play starts a new context or resume current playback on the user's active device.
 func (a *API) Play(uris ...string) error {
 	if len(uris) == 0 {
 		return a.put("/me/player/play", nil)
@@ -69,7 +69,7 @@ func (a *API) Play(uris ...string) error {
 	return a.put("/me/player/play", bytes.NewReader(data))
 }
 
-// Add an item to the end of the user’s current playback queue.
+// Queue adds an item to the end of the user's current playback queue.
 func (a *API) Queue(uri string) error {
 	v := url.Values{}
 	v.Add("uri", uri)
@@ -77,7 +77,7 @@ func (a *API) Queue(uri string) error {
 	return a.post("/me/player/queue?"+v.Encode(), nil)
 }
 
-// Set the repeat mode for the user’s playback. Options are repeat-track, repeat-context, and off.
+// Repeat sets the repeat mode for the user's playback. Options are repeat-track, repeat-context, and off.
 func (a *API) Repeat(state string) error {
 	v := url.Values{}
 	v.Add("state", state)
@@ -85,7 +85,7 @@ func (a *API) Repeat(state string) error {
 	return a.put("/me/player/repeat?"+v.Encode(), nil)
 }
 
-// Toggle shuffle on or off for user’s playback.
+// Shuffle toggles shuffle on or off for user's playback.
 func (a *API) Shuffle(state bool) error {
 	v := url.Values{}
 	v.Add("state", strconv.FormatBool(state))
@@ -93,12 +93,12 @@ func (a *API) Shuffle(state bool) error {
 	return a.put("/me/player/shuffle?"+v.Encode(), nil)
 }
 
-// Skips to previous track in the user’s queue.
+// SkipToPreviousTrack skips to the previous track in the user's queue.
 func (a *API) SkipToPreviousTrack() error {
 	return a.post("/me/player/previous", nil)
 }
 
-// Skips to next track in the user’s queue.
+// SkipToNextTrack skips to the next track in the user's queue.
 func (a *API) SkipToNextTrack() error {
 	return a.post("/me/player/next", nil)
 }
