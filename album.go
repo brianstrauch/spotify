@@ -11,6 +11,6 @@ type Album struct {
 type AlbumType string
 
 const (
-	Single_T AlbumType = "single"
-	Album_T  AlbumType = "album"
+	TypeSingle AlbumType = "single"
+	TypeAlbum  AlbumType = "album"
 )
