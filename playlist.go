@@ -4,30 +4,29 @@ import (
 	"path"
 )
 
+// Playlist represents the PlaylisstObject struct in the Spotify API
+// https://developer.spotify.com/documentation/web-api/reference/#object-playlistobject
 type Playlist struct {
 	Meta
-	Collaborative bool      `json:"collaborative"`
-	Description   string    `json:"description"`
-	Followers     ItemsMeta `json:"followers"`
-	Images        []Image   `json:"images"`
-	Name          string    `json:"name"`
-	Owner         Owner     `json:"owner"`
-	Public        bool      `json:"public"`
-	SnapshotID    string    `json:"snapshot_id"`
-	Tracks        Tracks    `json:"tracks"`
+	Collaborative bool       `json:"collaborative"`
+	Description   string     `json:"description"`
+	Followers     ItemsMeta  `json:"followers"`
+	Images        []Image    `json:"images"`
+	Name          string     `json:"name"`
+	Owner         PublicUser `json:"owner"`
+	Public        bool       `json:"public"`
+	SnapshotID    string     `json:"snapshot_id"`
+	Tracks        Tracks     `json:"tracks"`
 }
 
-type Owner struct {
-	Meta
-}
-
-type Response struct {
+// PlaylistResponse is the response type for the Get a Playlist request
+type PlaylistResponse struct {
 	ItemsMeta
 	Items []Playlist `json:"items"`
 }
 
 func (a *API) GetPlaylists() ([]Playlist, error) {
-	playlistsResponse := new(Response)
+	playlistsResponse := new(PlaylistResponse)
 	if err := a.get("/me/playlists", playlistsResponse); err != nil {
 		return nil, err
 	}

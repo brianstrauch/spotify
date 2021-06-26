@@ -5,20 +5,29 @@ import (
 	"time"
 )
 
+// Tracks represents a list of tracks
 type Tracks struct {
 	ItemsMeta
 	Items []Track `json:"items"`
 }
 
+// Track represents a Track in the Spotify API
+// See https://developer.spotify.com/documentation/web-api/reference/#object-playlisttrackobject
 type Track struct {
+	// AddedAt is when the track was added to the playlist or saved
 	AddedAt time.Time `json:"added_at"`
-	AddedBy Meta      `json:"added_by"`
-	IsLocal bool      `json:"is_local"`
-	Track   TrackInfo `json:"track"`
-	URI     string    `json:"uri"`
+	// AddedBy represents the user that added the track to the playlist, or saved it
+	AddedBy Meta `json:"added_by"`
+	IsLocal bool `json:"is_local"`
+	// Track contains details about the track itself
+	Track TrackObject `json:"track"`
+	// URI is the Spotify URI of the track
+	URI string `json:"uri"`
 }
 
-type TrackInfo struct {
+// TrackObject represents the TrackObject struct in the API
+// https://developer.spotify.com/documentation/web-api/reference/#object-trackobject
+type TrackObject struct {
 	Meta
 	Album            Album             `json:"albumomitempty"`
 	Artists          []Artist          `json:"artists"`
@@ -32,6 +41,7 @@ type TrackInfo struct {
 	PreviewURL       string            `json:"preview_url"`
 }
 
+// Duration is a wrapper struct for time.Duration to unmarshal durations in miliseconds
 type Duration struct {
 	time.Duration
 }
