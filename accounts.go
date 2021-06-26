@@ -17,37 +17,37 @@ import (
 const accountsBaseURL = "https://accounts.spotify.com"
 
 const (
-	// Gives write access to user-provided images.
+	// ScopeUGCImageUpload gives write access to user-provided images.
 	ScopeUGCImageUpload = "ugc-image-upload"
-	// Gives read access to a user’s recently played tracks.
+	// ScopeUserReadRecentlyPlayed gives read access to a user’s recently played tracks.
 	ScopeUserReadRecentlyPlayed = "user-read-recently-played"
-	// Gives read access to a user's top artists and tracks.
+	// ScopeUserTopRead gives read access to a user's top artists and tracks.
 	ScopeUserTopRead = "user-top-read"
-	// Gives read access to a user’s playback position in a content.
+	// ScopeUserReadPlaybackPosition gives read access to a user’s playback position in a content.
 	ScopeUserReadPlaybackPosition = "user-read-playback-position"
-	// Gives read access to a user’s player state.
+	// ScopeUserReadPlaybackState gives read access to a user’s player state.
 	ScopeUserReadPlaybackState = "user-read-playback-state"
-	// Gives write access to a user’s playback state.
+	// ScopeUserModifyPlaybackState gives write access to a user’s playback state.
 	ScopeUserModifyPlaybackState = "user-modify-playback-state"
-	// Gives read access to a user’s currently playing content.
+	// ScopeUserReadCurrentlyPlaying gives read access to a user’s currently playing content.
 	ScopeUserReadCurrentlyPlaying = "user-read-currently-playing"
-	// Gives write access to a user's public playlists.
+	// ScopePlaylistModifyPublic gives write access to a user's public playlists.
 	ScopePlaylistModifyPublic = "playlist-modify-public"
-	// Gives write access to a user's private playlists.
+	// ScopePlaylistModifyPrivate gives write access to a user's private playlists.
 	ScopePlaylistModifyPrivate = "playlist-modify-private"
-	// Includes collaborative playlists when requesting a user's playlists.
+	// ScopePlaylistReadCollaborative includes collaborative playlists when requesting a user's playlists.
 	ScopePlaylistReadCollaborative = "playlist-read-collaborative"
-	// Gives write/delete access to the list of artists and other users that the user follows.
+	// ScopeUserFollowModify gives write/delete access to the list of artists and other users that the user follows.
 	ScopeUserFollowModify = "user-follow-modify"
-	// Gives read access to the list of artists and other users that the user follows.
+	// ScopeUserFollowRead gives read access to the list of artists and other users that the user follows.
 	ScopeUserFollowRead = "user-follow-read"
-	// Gives write/delete access to a user's "Your Music" library.
+	// ScopeUserLibraryModify gives write/delete access to a user's "Your Music" library.
 	ScopeUserLibraryModify = "user-library-modify"
-	// Gives read access to a user's library.
+	// ScopeUserLibraryRead gives read access to a user's library.
 	ScopeUserLibraryRead = "user-library-read"
-	// Gives read access to user’s email address.
+	// ScopeUserReadEmail gives read access to user’s email address.
 	ScopeUserReadEmail = "user-read-email"
-	// Gives read access to user’s subscription details (type of user account).
+	// ScopeUserReadPrivate gives read access to user’s subscription details (type of user account).
 	ScopeUserReadPrivate = "user-read-private"
 )
 
