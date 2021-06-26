@@ -26,9 +26,9 @@ func (h *HREF) UnmarshalJSON(data []byte) error {
 type Meta struct {
 	HREF         *HREF
 	ExternalURLs map[string]string `json:"external_urls"`
-	ID           string
-	Type         string
-	URI          string
+	ID           string            `json:"id"`
+	Type         string            `json:"type"`
+	URI          string            `json:"uri"`
 }
 
 func (m *Meta) Get(api *API, obj interface{}) error {
@@ -37,11 +37,11 @@ func (m *Meta) Get(api *API, obj interface{}) error {
 
 type ItemsMeta struct {
 	HREF     *HREF
-	Limit    int
-	Next     *string
-	Offset   int
-	Previous *string
-	Total    int
+	Limit    int     `json:"limit"`
+	Next     *string `json:"next"`
+	Offset   int     `json:"offset"`
+	Previous *string `json:"previous"`
+	Total    int     `json:"total"`
 }
 
 func (im *ItemsMeta) Get(api *API, obj interface{}) error {

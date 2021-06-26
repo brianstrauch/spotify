@@ -1,7 +1,7 @@
 package spotify
 
 type Image struct {
-	Height *int
-	URL    string
-	Width  *int
+	Height int    `json:"height"`
+	URL    string `json:"url"`
+	Width  int    `json:"width"`
 }

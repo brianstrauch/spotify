@@ -6,15 +6,15 @@ import (
 
 type Playlist struct {
 	Meta
-	Collaborative bool
-	Description   string
-	Followers     ItemsMeta
-	Images        []Image // TODO: what is this
-	Name          string
-	Owner         Owner
-	Public        bool
-	SnapshotID    string `json:"snapshot_id"`
-	Tracks        Tracks
+	Collaborative bool      `json:"collaborative"`
+	Description   string    `json:"description"`
+	Followers     ItemsMeta `json:"followers"`
+	Images        []Image   `json:"images"`
+	Name          string    `json:"name"`
+	Owner         Owner     `json:"owner"`
+	Public        bool      `json:"public"`
+	SnapshotID    string    `json:"snapshot_id"`
+	Tracks        Tracks    `json:"tracks"`
 }
 
 type Owner struct {
@@ -23,7 +23,7 @@ type Owner struct {
 
 type Response struct {
 	ItemsMeta
-	Items []Playlist
+	Items []Playlist `json:"items"`
 }
 
 func (a *API) GetPlaylists() ([]Playlist, error) {
