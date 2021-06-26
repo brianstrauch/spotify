@@ -16,16 +16,9 @@ type Playback struct {
 }
 
 type Item struct {
-	Artists    []Artist `json:"artists"`
-	DurationMs int      `json:"duration_ms"`
-	ID         string   `json:"id"`
-	Name       string   `json:"name"`
-	Show       Show     `json:"show"`
-	Type       string   `json:"type"`
-}
-
-type Artist struct {
-	Name string `json:"name"`
+	TrackInfo
+	Show Show   `json:"show"`
+	Type string `json:"type"`
 }
 
 type Show struct {

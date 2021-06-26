@@ -54,6 +54,20 @@ func main() {
 	}
 	fmt.Println(paging.Tracks.Items[0].URI)
 
+	// 6. Fetch a playlist
+	playlists, err := spotify.NewAPI(token.AccessToken).GetPlaylists()
+	if err != nil {
+		panic(err)
+	} else if len(playlists) == 0 {
+		panic("no playlists")
+	}
+	playlist := new(spotify.Playlist)
+	if err := playlists[0].Get(spotify.NewAPI(token.AccessToken), playlist); err != nil {
+		panic(err)
+	}
+	fmt.Println(playlist.Name)
+	fmt.Printf("%d tracks\n", playlist.Tracks.Total)
+
 	// 6. Requesting a refreshed access token
 	token, err = spotify.RefreshToken(token.RefreshToken, clientID)
 	if err != nil {
