@@ -1,13 +1,12 @@
 package main
 
 import (
-	"context"
-	"errors"
 	"fmt"
-	"net/http"
+
+	"github.com/pkg/browser"
 
 	"github.com/brianstrauch/spotify"
-	"github.com/pkg/browser"
+	"github.com/brianstrauch/spotify/examples"
 )
 
 const (
@@ -17,7 +16,7 @@ const (
 
 func main() {
 	// 1. Create the code verifier and challenge
-	verifier, challenge, err := spotify.CreateVerifierAndChallenge()
+	verifier, challenge, err := spotify.CreatePKCEVerifierAndChallenge()
 	if err != nil {
 		panic(err)
 	}
@@ -28,64 +27,36 @@ func main() {
 		panic(err)
 	}
 
-	uri := spotify.BuildAuthURI(clientID, redirectURI, challenge, state)
+	uri := spotify.BuildPKCEAuthURI(clientID, redirectURI, challenge, state)
 
 	// 3. Your app redirects the user to the authorization URI
 	if err := browser.OpenURL(uri); err != nil {
 		panic(err)
 	}
 
-	code, err := listenForCode(state)
+	code, err := examples.ListenForCode(state)
 	if err != nil {
 		panic(err)
 	}
 
 	// 4. Your app exchanges the code for an access token
-	token, err := spotify.RequestToken(clientID, code, redirectURI, verifier)
+	token, err := spotify.RequestPKCEToken(clientID, code, redirectURI, verifier)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(token.AccessToken)
+	fmt.Println(token)
 
 	// 5. Use the access token to access the Spotify Web API
-	paging, err := spotify.NewAPI(token.AccessToken).Search("Mr. Brightside", 1)
+	user, err := spotify.NewAPI(token.AccessToken).GetUserProfile()
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(paging.Tracks.Items[0].URI)
+	fmt.Println(user)
 
 	// 6. Requesting a refreshed access token
-	token, err = spotify.RefreshToken(token.RefreshToken, clientID)
+	token, err = spotify.RefreshPKCEToken(token.RefreshToken, clientID)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(token.AccessToken)
-}
-
-func listenForCode(state string) (string, error) {
-	server := &http.Server{Addr: ":1024"}
-
-	var code string
-	var err error
-
-	http.HandleFunc("/callback", func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Query().Get("state") != state || r.URL.Query().Get("error") != "" {
-			err = errors.New("authorization failed")
-			fmt.Fprintln(w, "Failure.")
-		} else {
-			code = r.URL.Query().Get("code")
-			fmt.Fprintln(w, "Success!")
-		}
-
-		// Use a separate thread so browser doesn't show a "No Connection" message
-		go func() {
-			server.Shutdown(context.Background())
-		}()
-	})
-
-	if err := server.ListenAndServe(); err != http.ErrServerClosed {
-		return "", err
-	}
-
-	return code, err
+	fmt.Println(token)
 }

@@ -6,7 +6,7 @@
 
 A Go library for the Spotify Web API and Accounts service.
 
-* Authorize an application with PKCE
+* Authorize an application, with or without PKCE
 * Get currently playing music or podcast
 * Search for specific songs by name
 * Save music to user's library
