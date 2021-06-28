@@ -7,7 +7,7 @@ import (
 
 type HREF string
 
-// Get returns the most recent version of the object in it's entirety
+// Get returns the most recent version of the object in its entirety
 func (h *HREF) Get(api *API, obj interface{}) error {
 	url, err := h.GetURL()
 	if err != nil {
@@ -17,7 +17,7 @@ func (h *HREF) Get(api *API, obj interface{}) error {
 	return api.get(path, obj)
 }
 
-// GetURL parses HREF into a *net/url.URL
+// GetURL parses HREF into a URL object
 func (h *HREF) GetURL() (*url.URL, error) {
 	return url.Parse(string(*h))
 }
@@ -27,7 +27,7 @@ type Meta struct {
 	// HREF is the URL for fetching the entire resource from the API
 	HREF *HREF
 	// ExternalURLs contains external URLs relating to the object
-	// It's only key is `spotify` as of 2021-06-26
+	// Its only key is `spotify` as of 2021-06-26
 	ExternalURLs map[string]string `json:"external_urls"`
 	ID           string            `json:"id"`
 	// Type represents the type of the object.
@@ -37,7 +37,7 @@ type Meta struct {
 	URI string `json:"uri"`
 }
 
-// Get returns the most recent version of the object in it's entirety
+// Get returns the most recent version of the object in its entirety
 func (m *Meta) Get(api *API, obj interface{}) error {
 	return m.HREF.Get(api, obj)
 }
@@ -48,7 +48,7 @@ type ItemsMeta struct {
 	HREF *HREF
 	// Limit is the limit provided in the original request
 	Limit int `json:"limit"`
-	// Next is the API URl for the next page of the response
+	// Next is the API URL for the next page of the response
 	Next *string `json:"next"`
 	// Offset is the offset in the original request
 	Offset int `json:"offset"`
@@ -58,7 +58,7 @@ type ItemsMeta struct {
 	Total int `json:"total"`
 }
 
-// Get returns the most recent version of the object in it's entirety
+// Get returns the most recent version of the object in its entirety
 func (im *ItemsMeta) Get(api *API, obj interface{}) error {
 	return im.HREF.Get(api, obj)
 }

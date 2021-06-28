@@ -1,10 +1,8 @@
 package spotify
 
-import (
-	"path"
-)
+import "path"
 
-// Playlist represents the PlaylisstObject struct in the Spotify API
+// Playlist represents the PlaylistObject struct in the Spotify API
 // https://developer.spotify.com/documentation/web-api/reference/#object-playlistobject
 type Playlist struct {
 	Meta
@@ -36,7 +34,8 @@ func (a *API) GetPlaylists() ([]Playlist, error) {
 
 func (a *API) GetPlaylist(playlistID string) (*Playlist, error) {
 	playlistResponsse := new(Playlist)
-	if err := a.get(path.Join("/playlists", playlistID), playlistResponsse); err != nil {
+      url := fmt.Sprintf("/playlists/%d", playlistID)
+	if err := a.get(url, playlist); err != nil {
 		return nil, err
 	}
 	return playlistResponsse, nil
