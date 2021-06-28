@@ -16,7 +16,7 @@ type Playback struct {
 }
 
 type Item struct {
-	TrackObject
+	Track
 	Show Show   `json:"show"`
 	Type string `json:"type"`
 }
