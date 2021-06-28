@@ -1,27 +1,5 @@
 package spotify
 
-import (
-	"net/url"
-	"strings"
-)
-
-type HREF string
-
-// Get returns the most recent version of the object in its entirety
-func (h *HREF) Get(api *API, obj interface{}) error {
-	url, err := h.GetURL()
-	if err != nil {
-		return err
-	}
-	path := strings.Replace(url.Path, "/v1", "", 1)
-	return api.get(path, obj)
-}
-
-// GetURL parses HREF into a URL object
-func (h *HREF) GetURL() (*url.URL, error) {
-	return url.Parse(string(*h))
-}
-
 // Meta represents common fields found in most API responses
 type Meta struct {
 	// HREF is the URL for fetching the entire resource from the API
