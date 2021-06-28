@@ -16,7 +16,7 @@ const (
 )
 
 func main() {
-	verifier, challenge, err := spotify.CreateVerifierAndChallenge()
+	verifier, challenge, err := spotify.CreatePKCEVerifierAndChallenge()
 	if err != nil {
 		panic(err)
 	}
@@ -26,7 +26,7 @@ func main() {
 		panic(err)
 	}
 
-	uri := spotify.BuildAuthURI(clientID, redirectURI, challenge, state)
+	uri := spotify.BuildPKCEAuthURI(clientID, redirectURI, challenge, state)
 
 	if err := browser.OpenURL(uri); err != nil {
 		panic(err)
@@ -37,7 +37,7 @@ func main() {
 		panic(err)
 	}
 
-	token, err := spotify.RequestToken(clientID, code, redirectURI, verifier)
+	token, err := spotify.RequestPKCEToken(clientID, code, redirectURI, verifier)
 	if err != nil {
 		panic(err)
 	}
