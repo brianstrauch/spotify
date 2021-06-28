@@ -24,19 +24,17 @@ type PlaylistResponse struct {
 }
 
 func (a *API) GetPlaylists() ([]Playlist, error) {
-	playlistsResponse := new(PlaylistResponse)
-	if err := a.get("/me/playlists", playlistsResponse); err != nil {
+	playlists := new(PlaylistResponse)
+	if err := a.get("/me/playlists", playlists); err != nil {
 		return nil, err
 	}
-	// TODO: do more with response
-	return playlistsResponse.Items, nil
+	return playlists.Items, nil
 }
 
-func (a *API) GetPlaylist(playlistID string) (*Playlist, error) {
-	playlistResponsse := new(Playlist)
-      url := fmt.Sprintf("/playlists/%d", playlistID)
-	if err := a.get(url, playlist); err != nil {
+func (a *API) GetPlaylist(id string) (*Playlist, error) {
+	playlist := new(Playlist)
+	if err := a.get(path.Join("/playlists", id), playlist); err != nil {
 		return nil, err
 	}
-	return playlistResponsse, nil
+	return playlist, nil
 }
