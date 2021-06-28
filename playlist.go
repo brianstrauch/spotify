@@ -25,7 +25,7 @@ type PlaylistResponse struct {
 
 func (a *API) GetPlaylists() ([]Playlist, error) {
 	playlists := new(PlaylistResponse)
-	if err := a.get("/me/playlists", playlists); err != nil {
+	if err := a.get("v1", "/me/playlists", nil, playlists); err != nil {
 		return nil, err
 	}
 	return playlists.Items, nil
@@ -33,7 +33,7 @@ func (a *API) GetPlaylists() ([]Playlist, error) {
 
 func (a *API) GetPlaylist(id string) (*Playlist, error) {
 	playlist := new(Playlist)
-	if err := a.get(path.Join("/playlists", id), playlist); err != nil {
+	if err := a.get("v1", path.Join("/playlists", id), nil, playlist); err != nil {
 		return nil, err
 	}
 	return playlist, nil

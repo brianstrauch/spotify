@@ -31,20 +31,20 @@ func (a *API) GetPlayback() (*Playback, error) {
 	v.Add("additional_types", "episode")
 
 	playback := new(Playback)
-	err := a.get("/me/player?"+v.Encode(), playback)
+	err := a.get("v1", "/me/player", v, playback)
 
 	return playback, err
 }
 
 // Pause playback on the user’s account.
 func (a *API) Pause() error {
-	return a.put("/me/player/pause", nil)
+	return a.put("v1", "/me/player/pause", nil, nil)
 }
 
 // Start a new context or resume current playback on the user’s active device.
 func (a *API) Play(uris ...string) error {
 	if len(uris) == 0 {
-		return a.put("/me/player/play", nil)
+		return a.put("v1", "/me/player/play", nil, nil)
 	}
 
 	type Body struct {
@@ -59,7 +59,7 @@ func (a *API) Play(uris ...string) error {
 		return err
 	}
 
-	return a.put("/me/player/play", bytes.NewReader(data))
+	return a.put("v1", "/me/player/play", nil, bytes.NewReader(data))
 }
 
 // Add an item to the end of the user’s current playback queue.
@@ -67,7 +67,7 @@ func (a *API) Queue(uri string) error {
 	v := url.Values{}
 	v.Add("uri", uri)
 
-	return a.post("/me/player/queue?"+v.Encode(), nil)
+	return a.post("v1", "/me/player/queue", v, nil)
 }
 
 // Set the repeat mode for the user’s playback. Options are repeat-track, repeat-context, and off.
@@ -75,7 +75,7 @@ func (a *API) Repeat(state string) error {
 	v := url.Values{}
 	v.Add("state", state)
 
-	return a.put("/me/player/repeat?"+v.Encode(), nil)
+	return a.put("v1", "/me/player/repeat", v, nil)
 }
 
 // Toggle shuffle on or off for user’s playback.
@@ -83,15 +83,15 @@ func (a *API) Shuffle(state bool) error {
 	v := url.Values{}
 	v.Add("state", strconv.FormatBool(state))
 
-	return a.put("/me/player/shuffle?"+v.Encode(), nil)
+	return a.put("v1", "/me/player/shuffle", v, nil)
 }
 
 // Skips to previous track in the user’s queue.
 func (a *API) SkipToPreviousTrack() error {
-	return a.post("/me/player/previous", nil)
+	return a.post("v1", "/me/player/previous", nil, nil)
 }
 
 // Skips to next track in the user’s queue.
 func (a *API) SkipToNextTrack() error {
-	return a.post("/me/player/next", nil)
+	return a.post("v1", "/me/player/next", nil, nil)
 }

@@ -1,6 +1,7 @@
 package spotify
 
 import (
+	"errors"
 	"net/url"
 	"strings"
 )
@@ -13,8 +14,15 @@ func (h *HREF) Get(api *API, obj interface{}) error {
 	if err != nil {
 		return err
 	}
-	path := strings.Replace(url.Path, "/v1", "", 1)
-	return api.get(path, obj)
+	urlParts := strings.Split(url.Path, "/")
+	// looking for a URL that looks something like
+	// /v1/playlists
+	if len(urlParts) < 2 {
+		return errors.New("invalid endpoint structure")
+	}
+	apiVersion := urlParts[0]
+	path := strings.Join(urlParts[1:], "/")
+	return api.get(apiVersion, path, url.Query(), obj)
 }
 
 // URL parses HREF into a *net/url.URL

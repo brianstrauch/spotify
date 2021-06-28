@@ -18,7 +18,7 @@ func (a *API) Search(q string, limit int) (*Paging, error) {
 	v.Add("limit", strconv.Itoa(limit))
 
 	pagingObject := new(Paging)
-	err := a.get("/search?"+v.Encode(), pagingObject)
+	err := a.get("v1", "/search", v, pagingObject)
 
 	return pagingObject, err
 }
