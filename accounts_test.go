@@ -7,8 +7,8 @@ import (
 	"testing"
 )
 
-func TestCreateVerifierAndChallenge(t *testing.T) {
-	verifier, challenge, err := CreateVerifierAndChallenge()
+func TestCreatePKCEVerifierAndChallenge(t *testing.T) {
+	verifier, challenge, err := CreatePKCEVerifierAndChallenge()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -25,7 +25,7 @@ func TestCreateVerifierAndChallenge(t *testing.T) {
 	}
 }
 
-func TestBuildAuthURI(t *testing.T) {
+func TestBuildPKCEAuthURI(t *testing.T) {
 	var (
 		clientID    = "client"
 		redirectURI = "http://localhost:1024"
@@ -34,7 +34,7 @@ func TestBuildAuthURI(t *testing.T) {
 		scope       = "user-modify-playback-state"
 	)
 
-	uri := BuildAuthURI(clientID, redirectURI, challenge, state, scope)
+	uri := BuildPKCEAuthURI(clientID, redirectURI, challenge, state, scope)
 
 	substrings := []string{
 		"client_id=" + clientID,

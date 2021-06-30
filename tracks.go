@@ -11,7 +11,7 @@ type Tracks struct {
 	Items []PlaylistTrack `json:"items"`
 }
 
-// Track represents a Track in the Spotify API
+// PlaylistTrack represents a PlaylistTrackObject in the Spotify API
 // See https://developer.spotify.com/documentation/web-api/reference/#object-playlisttrackobject
 type PlaylistTrack struct {
 	// AddedAt is when the track was added to the playlist or saved
@@ -25,7 +25,7 @@ type PlaylistTrack struct {
 	URI string `json:"uri"`
 }
 
-// TrackObject represents the TrackObject struct in the API
+// Track represents the TrackObject struct in the API
 // https://developer.spotify.com/documentation/web-api/reference/#object-trackobject
 type Track struct {
 	Meta

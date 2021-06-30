@@ -17,7 +17,6 @@ const (
 func main() {
 	// 1. Create the code verifier and challenge
 	verifier, challenge, err := spotify.CreatePKCEVerifierAndChallenge()
-
 	if err != nil {
 		panic(err)
 	}

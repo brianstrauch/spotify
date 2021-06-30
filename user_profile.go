@@ -10,7 +10,7 @@ type User struct {
 // GetUserProfile gets detailed profile information about the current user (including the current user's username).
 func (a *API) GetUserProfile() (*User, error) {
 	user := new(User)
-	err := a.get("/me", user)
+	err := a.get("v1", "/me", nil, user)
 
 	return user, err
 }

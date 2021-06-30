@@ -1,12 +1,10 @@
 package main
 
 import (
-	"context"
-	"errors"
 	"fmt"
-	"net/http"
 
 	"github.com/brianstrauch/spotify"
+	"github.com/brianstrauch/spotify/examples"
 	"github.com/pkg/browser"
 )
 
@@ -32,7 +30,7 @@ func main() {
 		panic(err)
 	}
 
-	code, err := listenForCode(state)
+	code, err := examples.ListenForCode(state)
 	if err != nil {
 		panic(err)
 	}
@@ -42,45 +40,23 @@ func main() {
 		panic(err)
 	}
 
-	playlists, err := spotify.NewAPI(token.AccessToken).GetPlaylists()
+	api := spotify.NewAPI(token.AccessToken)
+
+	playlists, err := api.GetPlaylists()
 	if err != nil {
 		panic(err)
-	} else if len(playlists) == 0 {
-		panic("no playlists")
+	}
+	if len(playlists) == 0 {
+		panic("no playlists found")
 	}
 
 	playlist := new(spotify.Playlist)
-	if err := playlists[0].Get(spotify.NewAPI(token.AccessToken), playlist); err != nil {
+	if err := playlists[0].Get(api, playlist); err != nil {
 		panic(err)
 	}
+
 	fmt.Println(playlist.Name)
-	fmt.Printf("%d tracks\n", playlist.Tracks.Total)
-}
-
-func listenForCode(state string) (string, error) {
-	server := &http.Server{Addr: ":1024"}
-
-	var code string
-	var err error
-
-	http.HandleFunc("/callback", func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Query().Get("state") != state || r.URL.Query().Get("error") != "" {
-			err = errors.New("authorization failed")
-			fmt.Fprintln(w, "Failure.")
-		} else {
-			code = r.URL.Query().Get("code")
-			fmt.Fprintln(w, "Success!")
-		}
-
-		// Use a separate thread so browser doesn't show a "No Connection" message
-		go func() {
-			server.Shutdown(context.Background())
-		}()
-	})
-
-	if err := server.ListenAndServe(); err != http.ErrServerClosed {
-		return "", err
+	for i, playlistTrack := range playlist.Tracks.Items {
+		fmt.Printf("%d. %s\n", i+1, playlistTrack.Track.Name)
 	}
-
-	return code, err
 }

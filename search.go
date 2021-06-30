@@ -9,8 +9,8 @@ type Paging struct {
 	Tracks Tracks `json:"tracks"`
 }
 
-// Get Spotify Catalog information about albums, artists, playlists, tracks, shows or episodes that match a keyword
-// string.
+// Search gets Spotify Catalog information about albums, artists, playlists, tracks, shows or episodes that match a
+// keyword string.
 func (a *API) Search(q string, limit int) (*Paging, error) {
 	v := url.Values{}
 	v.Add("q", q)

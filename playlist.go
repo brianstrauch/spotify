@@ -17,17 +17,16 @@ type Playlist struct {
 	Tracks        Tracks     `json:"tracks"`
 }
 
-// PlaylistResponse is the response type for the Get a Playlist request
-type PlaylistResponse struct {
-	ItemsMeta
-	Items []Playlist `json:"items"`
-}
-
 func (a *API) GetPlaylists() ([]Playlist, error) {
-	playlists := new(PlaylistResponse)
+	playlists := &struct {
+		ItemsMeta
+		Items []Playlist `json:"items"`
+	}{}
+
 	if err := a.get("v1", "/me/playlists", nil, playlists); err != nil {
 		return nil, err
 	}
+
 	return playlists.Items, nil
 }
 
@@ -36,5 +35,6 @@ func (a *API) GetPlaylist(id string) (*Playlist, error) {
 	if err := a.get("v1", path.Join("/playlists", id), nil, playlist); err != nil {
 		return nil, err
 	}
+
 	return playlist, nil
 }

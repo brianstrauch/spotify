@@ -51,6 +51,7 @@ func (a *API) call(method, apiVersion, endpoint string, query url.Values, body i
 		RawQuery: query.Encode(),
 		Scheme:   "https",
 	}
+
 	req, err := http.NewRequest(method, url.String(), body)
 	if err != nil {
 		return err
