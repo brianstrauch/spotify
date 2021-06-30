@@ -6,9 +6,11 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
+	"path"
 )
 
-const BaseURL = "https://api.spotify.com/v1"
+const APIHost = "api.spotify.com"
 
 type Error struct {
 	Error struct {
@@ -26,24 +28,30 @@ func NewAPI(token string) *API {
 	return &API{token}
 }
 
-func (a *API) get(endpoint string, result interface{}) error {
-	return a.call(http.MethodGet, endpoint, nil, result)
+func (a *API) get(apiVersion, endpoint string, query url.Values, result interface{}) error {
+	return a.call(http.MethodGet, apiVersion, endpoint, query, nil, result)
 }
 
-func (a *API) post(endpoint string, body io.Reader) error {
-	return a.call(http.MethodPost, endpoint, body, nil)
+func (a *API) post(apiVersion, endpoint string, query url.Values, body io.Reader) error {
+	return a.call(http.MethodPost, apiVersion, endpoint, query, body, nil)
 }
 
-func (a *API) put(endpoint string, body io.Reader) error {
-	return a.call(http.MethodPut, endpoint, body, nil)
+func (a *API) put(apiVersion, endpoint string, query url.Values, body io.Reader) error {
+	return a.call(http.MethodPut, apiVersion, endpoint, query, body, nil)
 }
 
-func (a *API) delete(endpoint string) error {
-	return a.call(http.MethodDelete, endpoint, nil, nil)
+func (a *API) delete(apiVersion, endpoint string, query url.Values) error {
+	return a.call(http.MethodDelete, apiVersion, endpoint, query, nil, nil)
 }
 
-func (a *API) call(method string, endpoint string, body io.Reader, result interface{}) error {
-	req, err := http.NewRequest(method, BaseURL+endpoint, body)
+func (a *API) call(method, apiVersion, endpoint string, query url.Values, body io.Reader, result interface{}) error {
+	url := url.URL{
+		Host:     APIHost,
+		Path:     path.Join(apiVersion, endpoint),
+		RawQuery: query.Encode(),
+		Scheme:   "https",
+	}
+	req, err := http.NewRequest(method, url.String(), body)
 	if err != nil {
 		return err
 	}
