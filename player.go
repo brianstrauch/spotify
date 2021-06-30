@@ -3,6 +3,8 @@ package spotify
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
+	"io"
 	"net/url"
 	"strconv"
 )
@@ -39,6 +41,9 @@ func (a *API) GetPlayback() (*Playback, error) {
 
 	playback := new(Playback)
 	err := a.get("/me/player?"+v.Encode(), playback)
+	if err == io.EOF {
+		return nil, errors.New("Player command failed: No active device found")
+	}
 
 	return playback, err
 }
