@@ -1,6 +1,6 @@
 package spotify
 
-// PublicUser represents the PublicUserObject in the Spotify API
+// PublicUser represents a PublicUserObject in the Spotify API
 // https://developer.spotify.com/documentation/web-api/reference/#object-publicuserobject
 type PublicUser struct {
 	Meta

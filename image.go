@@ -1,6 +1,6 @@
 package spotify
 
-// Image represents the ImageObject struct in the Spotify API
+// Image represents an ImageObject in the Spotify API
 // https://developer.spotify.com/documentation/web-api/reference/#object-imageobject
 type Image struct {
 	Height int    `json:"height"`
