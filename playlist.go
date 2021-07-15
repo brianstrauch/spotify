@@ -29,20 +29,18 @@ type Playlist struct {
 	Tracks        PlaylistTrackPage `json:"tracks"`
 }
 
+// GetPlaylists gets a list of the playlists owned or followed by the current Spotify user.
+// https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-list-of-current-users-playlists
 func (a *API) GetPlaylists() ([]*Playlist, error) {
 	playlists := new(PlaylistPage)
-	if err := a.get("v1", "/me/playlists", nil, playlists); err != nil {
-		return nil, err
-	}
-
-	return playlists.Items, nil
+	err := a.get("v1", "/me/playlists", nil, playlists)
+	return playlists.Items, err
 }
 
+// GetPlaylist gets a playlist owned by a Spotify user.
+// https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-playlist
 func (a *API) GetPlaylist(id string) (*Playlist, error) {
 	playlist := new(Playlist)
-	if err := a.get("v1", fmt.Sprintf("/playlists/%s", id), nil, playlist); err != nil {
-		return nil, err
-	}
-
-	return playlist, nil
+	err := a.get("v1", fmt.Sprintf("/playlists/%s", id), nil, playlist)
+	return playlist, err
 }

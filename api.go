@@ -12,12 +12,11 @@ import (
 
 const APIHost = "api.spotify.com"
 
+// Error represents an ErrorObject in the Spotify API
+// https://developer.spotify.com/documentation/web-api/reference/#object-errorobject
 type Error struct {
-	Error struct {
-		Status  int    `json:"status"`
-		Message string `json:"message"`
-		Reason  string `json:"reason"`
-	} `json:"error"`
+	Status  int    `json:"status"`
+	Message string `json:"message"`
 }
 
 type API struct {
@@ -28,8 +27,8 @@ func NewAPI(token string) *API {
 	return &API{token}
 }
 
-func (a *API) get(apiVersion, endpoint string, query url.Values, result interface{}) error {
-	return a.call(http.MethodGet, apiVersion, endpoint, query, nil, result)
+func (a *API) get(apiVersion, endpoint string, query url.Values, res interface{}) error {
+	return a.call(http.MethodGet, apiVersion, endpoint, query, nil, res)
 }
 
 func (a *API) post(apiVersion, endpoint string, query url.Values, body io.Reader) error {
@@ -77,7 +76,9 @@ func (a *API) call(method, apiVersion, endpoint string, query url.Values, body i
 	}
 
 	// Error
-	spotifyErr := new(Error)
+	spotifyErr := &struct {
+		Error Error `json:"error"`
+	}{}
 	if err := json.NewDecoder(res.Body).Decode(spotifyErr); err != nil {
 		return err
 	}
