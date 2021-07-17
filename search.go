@@ -7,10 +7,10 @@ import (
 
 // Search gets Spotify Catalog information about albums, artists, playlists, tracks, shows or episodes that match a
 // keyword string.
-func (a *API) Search(q string, limit int) (*Paging, error) {
+func (a *API) Search(q, searchType  string, limit int) (*Paging, error) {
 	v := url.Values{}
 	v.Add("q", q)
-	v.Add("type", "track")
+	v.Add("type", searchType)
 	v.Add("limit", strconv.Itoa(limit))
 
 	paging := new(Paging)
