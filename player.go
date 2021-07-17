@@ -140,3 +140,55 @@ func (a *API) Queue(uri string) error {
 
 	return a.post("v1", "/me/player/queue", v, nil)
 }
+
+// PlayPlaylist sets the playback on a playlist context and not a single song uri.
+// https://community.spotify.com/t5/Spotify-for-Developers/API-is-there-a-way-to-start-playing-a-playlist-from-a-specific/m-p/4977046#M509
+// https://stackoverflow.com/questions/48532890/spotify-web-api-play-endpoint-play-track
+func (a *API) PlayPlaylist(deviceID, playlistURI string) error {
+
+	v := make(url.Values)
+	if deviceID != "" {
+		v.Add("device_id", deviceID)
+	}
+
+	if len(playlistURI) == 0{
+		return a.put("v1", "/me/player/play", v, nil)
+	}
+
+
+	body := &struct {
+		URIs string `json:"context_uri"`
+	}{URIs: playlistURI}
+
+	data, err := json.Marshal(body)
+	if err != nil {
+		return err
+	}
+
+	return a.put("v1", "/me/player/play", v, bytes.NewReader(data))
+}
+
+// PlayAlbum sets the playback on an album context and not a single song uri. This function is very similar to PlayPlaylist
+// https://community.spotify.com/t5/Spotify-for-Developers/API-is-there-a-way-to-start-playing-a-playlist-from-a-specific/m-p/4977046#M509
+// TODO: Add more documentation here - This is insufficient
+func (a *API) PlayAlbum(deviceID, albumURI string) error {
+	v := make(url.Values)
+	if deviceID != "" {
+		v.Add("device_id", deviceID)
+	}
+
+	if len(albumURI) == 0{
+		return a.put("v1", "/me/player/play", v, nil)
+	}
+
+	body := &struct {
+		URIs string `json:"context_uri"`
+	}{URIs: albumURI}
+
+	data, err := json.Marshal(body)
+	if err != nil {
+		return err
+	}
+
+	return a.put("v1", "/me/player/play", v, bytes.NewReader(data))
+}
