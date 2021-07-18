@@ -76,37 +76,18 @@ func (a *API) Play(deviceID, contextURI string, uris ...string) error {
 		v.Add("device_id", deviceID)
 	}
 
-	if (len(uris) == 0) && (len(contextURI) == 0) {
-		return a.put("v1", "/me/player/play", v, nil)
+	body := &struct {
+		ContextURIs string `json:"context_uri,omitempty"`
+		URIs []string `json:"uris,omitempty"`
+	}{ContextURIs: contextURI,URIs: uris}
+
+	data, err := json.Marshal(body)
+	if err != nil {
+		return err
 	}
 
-	// If I don't put the return into the if statement the IDE states that the body struct will not be used and returned?
-	if contextURI != "" {
-		body := &struct {
-			ContextURIs string `json:"context_uri"`
-		}{ContextURIs: contextURI}
+	return a.put("v1", "/me/player/play", v, bytes.NewReader(data))
 
-		data, err := json.Marshal(body)
-		if err != nil {
-			return err
-		}
-
-		return a.put("v1", "/me/player/play", v, bytes.NewReader(data))
-
-	} else if len(uris) > 0 {
-		body := &struct {
-			URIs []string `json:"uris"`
-		}{URIs: uris}
-
-		data, err := json.Marshal(body)
-		if err != nil {
-			return err
-		}
-
-		return a.put("v1", "/me/player/play", v, bytes.NewReader(data))
-
-	}
-	return a.put("v1", "/me/player/play", v, nil)
 }
 
 // Pause pauses playback on the user's account.
