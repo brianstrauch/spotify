@@ -69,7 +69,6 @@ func (a *API) GetDevices() ([]*Device, error) {
 
 // Play starts a new context or resume current playback on the user's active device.
 // https://developer.spotify.com/documentation/web-api/reference/#endpoint-start-a-users-playback
-// contextURI added to allow for album and playlist support - A blank context uri will play just the track uri.
 func (a *API) Play(deviceID, contextURI string, uris ...string) error {
 	v := make(url.Values)
 	if deviceID != "" {
@@ -77,9 +76,9 @@ func (a *API) Play(deviceID, contextURI string, uris ...string) error {
 	}
 
 	body := &struct {
-		ContextURIs string `json:"context_uri,omitempty"`
-		URIs []string `json:"uris,omitempty"`
-	}{ContextURIs: contextURI,URIs: uris}
+		ContextURIs string   `json:"context_uri,omitempty"`
+		URIs        []string `json:"uris,omitempty"`
+	}{ContextURIs: contextURI, URIs: uris}
 
 	data, err := json.Marshal(body)
 	if err != nil {
@@ -87,7 +86,6 @@ func (a *API) Play(deviceID, contextURI string, uris ...string) error {
 	}
 
 	return a.put("v1", "/me/player/play", v, bytes.NewReader(data))
-
 }
 
 // Pause pauses playback on the user's account.
