@@ -75,17 +75,30 @@ func (a *API) Play(deviceID, contextURI string, uris ...string) error {
 		v.Add("device_id", deviceID)
 	}
 
-	body := &struct {
-		ContextURIs string   `json:"context_uri,omitempty"`
-		URIs        []string `json:"uris,omitempty"`
-	}{ContextURIs: contextURI, URIs: uris}
+	if contextURI != "" {
+		body := &struct {
+			ContextURIs string `json:"context_uri"`
+		}{ContextURIs: contextURI}
 
-	data, err := json.Marshal(body)
-	if err != nil {
-		return err
+		data, err := json.Marshal(body)
+		if err != nil {
+			return err
+		}
+
+		return a.put("v1", "/me/player/play", v, bytes.NewReader(data))
+
+	} else {
+		body := &struct {
+			URIs []string `json:"uris,omitempty"`
+		}{URIs: uris}
+
+		data, err := json.Marshal(body)
+		if err != nil {
+			return err
+		}
+
+		return a.put("v1", "/me/player/play", v, bytes.NewReader(data))
 	}
-
-	return a.put("v1", "/me/player/play", v, bytes.NewReader(data))
 }
 
 // Pause pauses playback on the user's account.
