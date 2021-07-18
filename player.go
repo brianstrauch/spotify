@@ -69,19 +69,16 @@ func (a *API) GetDevices() ([]*Device, error) {
 
 // Play starts a new context or resume current playback on the user's active device.
 // https://developer.spotify.com/documentation/web-api/reference/#endpoint-start-a-users-playback
-func (a *API) Play(deviceID string, uris ...string) error {
+func (a *API) Play(deviceID, contextURI string, uris ...string) error {
 	v := make(url.Values)
 	if deviceID != "" {
 		v.Add("device_id", deviceID)
 	}
 
-	if len(uris) == 0 {
-		return a.put("v1", "/me/player/play", v, nil)
-	}
-
 	body := &struct {
-		URIs []string `json:"uris"`
-	}{URIs: uris}
+		ContextURIs string   `json:"context_uri,omitempty"`
+		URIs        []string `json:"uris,omitempty"`
+	}{ContextURIs: contextURI, URIs: uris}
 
 	data, err := json.Marshal(body)
 	if err != nil {
