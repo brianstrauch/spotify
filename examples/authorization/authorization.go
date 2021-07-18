@@ -10,9 +10,8 @@ import (
 )
 
 const (
-	clientID     = "81dddfee3e8d47d89b7902ba616f3357"
+	clientID     = "REDACTED"
 	clientSecret = "REDACTED"
-	redirectURI  = "http://localhost:1024/callback"
 )
 
 func main() {
@@ -22,7 +21,7 @@ func main() {
 		panic(err)
 	}
 
-	uri := spotify.BuildAuthURI(clientID, redirectURI, state, false)
+	uri := spotify.BuildAuthURI(clientID, examples.RedirectURI, state, false)
 
 	if err := browser.OpenURL(uri); err != nil {
 		panic(err)
@@ -34,7 +33,7 @@ func main() {
 	}
 
 	// 2. Have your application request refresh and access tokens; Spotify returns access and refresh tokens
-	token, err := spotify.RequestToken(clientID, code, redirectURI, clientSecret)
+	token, err := spotify.RequestToken(clientID, code, examples.RedirectURI, clientSecret)
 	if err != nil {
 		panic(err)
 	}

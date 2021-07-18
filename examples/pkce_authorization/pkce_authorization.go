@@ -9,11 +9,6 @@ import (
 	"github.com/brianstrauch/spotify/examples"
 )
 
-const (
-	clientID    = "81dddfee3e8d47d89b7902ba616f3357"
-	redirectURI = "http://localhost:1024/callback"
-)
-
 func main() {
 	// 1. Create the code verifier and challenge
 	verifier, challenge, err := spotify.CreatePKCEVerifierAndChallenge()
@@ -27,7 +22,7 @@ func main() {
 		panic(err)
 	}
 
-	uri := spotify.BuildPKCEAuthURI(clientID, redirectURI, challenge, state)
+	uri := spotify.BuildPKCEAuthURI(examples.ClientID, examples.RedirectURI, challenge, state)
 
 	// 3. Your app redirects the user to the authorization URI
 	if err := browser.OpenURL(uri); err != nil {
@@ -40,7 +35,7 @@ func main() {
 	}
 
 	// 4. Your app exchanges the code for an access token
-	token, err := spotify.RequestPKCEToken(clientID, code, redirectURI, verifier)
+	token, err := spotify.RequestPKCEToken(examples.ClientID, code, examples.RedirectURI, verifier)
 	if err != nil {
 		panic(err)
 	}
@@ -54,7 +49,7 @@ func main() {
 	fmt.Println(user)
 
 	// 6. Requesting a refreshed access token
-	token, err = spotify.RefreshPKCEToken(token.RefreshToken, clientID)
+	token, err = spotify.RefreshPKCEToken(token.RefreshToken, examples.ClientID)
 	if err != nil {
 		panic(err)
 	}

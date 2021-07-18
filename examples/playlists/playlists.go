@@ -5,42 +5,12 @@ import (
 
 	"github.com/brianstrauch/spotify"
 	"github.com/brianstrauch/spotify/examples"
-	"github.com/pkg/browser"
-)
-
-const (
-	clientID    = "81dddfee3e8d47d89b7902ba616f3357"
-	redirectURI = "http://localhost:1024/callback"
 )
 
 func main() {
-	verifier, challenge, err := spotify.CreatePKCEVerifierAndChallenge()
-	if err != nil {
-		panic(err)
-	}
+	token := examples.Login()
 
-	state, err := spotify.GenerateRandomState()
-	if err != nil {
-		panic(err)
-	}
-
-	uri := spotify.BuildPKCEAuthURI(clientID, redirectURI, challenge, state)
-
-	if err := browser.OpenURL(uri); err != nil {
-		panic(err)
-	}
-
-	code, err := examples.ListenForCode(state)
-	if err != nil {
-		panic(err)
-	}
-
-	token, err := spotify.RequestPKCEToken(clientID, code, redirectURI, verifier)
-	if err != nil {
-		panic(err)
-	}
-
-	api := spotify.NewAPI(token.AccessToken)
+	api := spotify.NewAPI(token)
 
 	playlists, err := api.GetPlaylists()
 	if err != nil {
