@@ -20,3 +20,13 @@ type PlaylistTrackPage struct {
 	PagingMeta
 	Items []*PlaylistTrack `json:"items"`
 }
+
+// PagingAlbums represents an PagingObject in the spotify API for albums
+type PagingAlbums struct {
+	Albums AlbumPage `json:"albums"`
+}
+
+type AlbumPage struct {
+	PagingMeta
+	Items []*Album `json:"items"`
+}
