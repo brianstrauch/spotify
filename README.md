@@ -41,6 +41,3 @@ func main() {
   fmt.Printf("Playing %s\n", playback.Item.Name)
 }
 ```
-
-## Used By
-* https://github.com/brianstrauch/spotify-cli
