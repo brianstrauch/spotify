@@ -36,6 +36,8 @@ const (
 	ScopePlaylistModifyPublic = "playlist-modify-public"
 	// ScopePlaylistModifyPrivate gives write access to a user's private playlists.
 	ScopePlaylistModifyPrivate = "playlist-modify-private"
+	// ScopePlaylistReadPrivate gives read access to a user's private playlists.
+	ScopePlaylistReadPrivate = "playlist-read-private"
 	// ScopePlaylistReadCollaborative includes collaborative playlists when requesting a user's playlists.
 	ScopePlaylistReadCollaborative = "playlist-read-collaborative"
 	// ScopeUserFollowModify gives write/delete access to the list of artists and other users that the user follows.
