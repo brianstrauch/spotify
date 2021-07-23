@@ -1,7 +1,5 @@
 package spotify
 
-import "time"
-
 // Album represents an AlbumObject in the Spotify API
 // https://developer.spotify.com/documentation/web-api/reference/#object-albumobject
 type Album struct {
@@ -11,7 +9,7 @@ type Album struct {
 	Images               []Image   `json:"images"`
 	Label                string    `json:"label"`
 	Popularity           int       `json:"popularity"`
-	ReleaseDate          time.Time `json:"release_date"`
+	ReleaseDate          string    `json:"release_date"`
 	ReleaseDatePrecision string    `json:"release_date_precision"`
 	TotalTracks          int       `json:"total_tracks"`
 	Tracks               TrackPage `json:"tracks"`

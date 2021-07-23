@@ -3,6 +3,7 @@ package spotify
 // Paging represents a PagingObject in the Spotify API
 // https://developer.spotify.com/documentation/web-api/reference/#object-pagingobject
 type Paging struct {
+	Albums AlbumPage `json:"albums"`
 	Tracks TrackPage `json:"tracks"`
 }
 
@@ -19,4 +20,9 @@ type PlaylistPage struct {
 type PlaylistTrackPage struct {
 	PagingMeta
 	Items []*PlaylistTrack `json:"items"`
+}
+
+type AlbumPage struct {
+	PagingMeta
+	Items []*Album `json:"items"`
 }
