@@ -6,17 +6,19 @@ import (
 )
 
 // SaveTracks saves one or more tracks to the current user's 'Your Music' library.
+// https://developer.spotify.com/documentation/web-api/reference/#endpoint-save-tracks-user
 func (a *API) SaveTracks(ids ...string) error {
-	v := url.Values{}
-	v.Add("ids", strings.Join(ids, ","))
+	query := make(url.Values)
+	query.Add("ids", strings.Join(ids, ","))
 
-	return a.put("v1", "/me/tracks", v, nil)
+	return a.put("v1", "/me/tracks", query, nil)
 }
 
 // RemoveSavedTracks removes one or more tracks from the current user's 'Your Music' library.
+// https://developer.spotify.com/documentation/web-api/reference/#endpoint-remove-tracks-user
 func (a *API) RemoveSavedTracks(ids ...string) error {
-	v := url.Values{}
-	v.Add("ids", strings.Join(ids, ","))
+	query := make(url.Values)
+	query.Add("ids", strings.Join(ids, ","))
 
-	return a.delete("v1", "/me/tracks", v)
+	return a.delete("v1", "/me/tracks", query)
 }

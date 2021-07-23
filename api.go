@@ -12,13 +12,6 @@ import (
 
 const APIHost = "api.spotify.com"
 
-// Error represents an ErrorObject in the Spotify API
-// https://developer.spotify.com/documentation/web-api/reference/#object-errorobject
-type Error struct {
-	Status  int    `json:"status"`
-	Message string `json:"message"`
-}
-
 type API struct {
 	token string
 }
@@ -31,8 +24,8 @@ func (a *API) get(apiVersion, endpoint string, query url.Values, res interface{}
 	return a.call(http.MethodGet, apiVersion, endpoint, query, nil, res)
 }
 
-func (a *API) post(apiVersion, endpoint string, query url.Values, body io.Reader) error {
-	return a.call(http.MethodPost, apiVersion, endpoint, query, body, nil)
+func (a *API) post(apiVersion, endpoint string, query url.Values, body io.Reader, res interface{}) error {
+	return a.call(http.MethodPost, apiVersion, endpoint, query, body, res)
 }
 
 func (a *API) put(apiVersion, endpoint string, query url.Values, body io.Reader) error {

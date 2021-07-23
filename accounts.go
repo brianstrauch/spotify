@@ -149,49 +149,49 @@ func BuildPKCEAuthURI(clientID, redirectURI, challenge, state string, scopes ...
 
 // RequestToken allows a user to exchange an authorization code for an access token.
 func RequestToken(clientID, code, redirectURI, clientSecret string) (*Token, error) {
-	v := url.Values{}
-	v.Set("client_id", clientID)
-	v.Set("grant_type", "authorization_code")
-	v.Set("code", code)
-	v.Set("redirect_uri", redirectURI)
-	v.Set("client_secret", clientSecret)
-	body := strings.NewReader(v.Encode())
+	query := make(url.Values)
+	query.Set("client_id", clientID)
+	query.Set("grant_type", "authorization_code")
+	query.Set("code", code)
+	query.Set("redirect_uri", redirectURI)
+	query.Set("client_secret", clientSecret)
+	body := strings.NewReader(query.Encode())
 
 	return postToken(body)
 }
 
 // RequestPKCEToken allows a user to exchange an authorization code for an access token.
 func RequestPKCEToken(clientID, code, redirectURI, verifier string) (*Token, error) {
-	v := url.Values{}
-	v.Set("client_id", clientID)
-	v.Set("grant_type", "authorization_code")
-	v.Set("code", code)
-	v.Set("redirect_uri", redirectURI)
-	v.Set("code_verifier", verifier)
-	body := strings.NewReader(v.Encode())
+	query := make(url.Values)
+	query.Set("client_id", clientID)
+	query.Set("grant_type", "authorization_code")
+	query.Set("code", code)
+	query.Set("redirect_uri", redirectURI)
+	query.Set("code_verifier", verifier)
+	body := strings.NewReader(query.Encode())
 
 	return postToken(body)
 }
 
 // RefreshToken allows a user to exchange a refresh token for an access token.
 func RefreshToken(refreshToken, clientID, clientSecret string) (*Token, error) {
-	v := url.Values{}
-	v.Set("grant_type", "refresh_token")
-	v.Set("refresh_token", refreshToken)
-	v.Set("client_id", clientID)
-	v.Set("client_secret", clientSecret)
-	body := strings.NewReader(v.Encode())
+	query := make(url.Values)
+	query.Set("grant_type", "refresh_token")
+	query.Set("refresh_token", refreshToken)
+	query.Set("client_id", clientID)
+	query.Set("client_secret", clientSecret)
+	body := strings.NewReader(query.Encode())
 
 	return postToken(body)
 }
 
 // RefreshPKCEToken allows a user to exchange a refresh token for an access token.
 func RefreshPKCEToken(refreshToken, clientID string) (*Token, error) {
-	v := url.Values{}
-	v.Set("grant_type", "refresh_token")
-	v.Set("refresh_token", refreshToken)
-	v.Set("client_id", clientID)
-	body := strings.NewReader(v.Encode())
+	query := make(url.Values)
+	query.Set("grant_type", "refresh_token")
+	query.Set("refresh_token", refreshToken)
+	query.Set("client_id", clientID)
+	body := strings.NewReader(query.Encode())
 
 	return postToken(body)
 }
