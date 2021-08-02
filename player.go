@@ -50,11 +50,8 @@ func (a *API) GetDevices() ([]*Device, error) {
 
 // Play starts a new context or resume current playback on the user's active device.
 // https://developer.spotify.com/documentation/web-api/reference/#endpoint-start-a-users-playback
-func (a *API) Play(deviceID, contextURI string, uris ...string) error {
+func (a *API) Play(contextURI string, uris ...string) error {
 	query := make(url.Values)
-	if deviceID != "" {
-		query.Add("device_id", deviceID)
-	}
 
 	body := &struct {
 		ContextURIs string   `json:"context_uri,omitempty"`
@@ -74,13 +71,8 @@ func (a *API) Play(deviceID, contextURI string, uris ...string) error {
 
 // Pause pauses playback on the user's account.
 // https://developer.spotify.com/documentation/web-api/reference/#endpoint-pause-a-users-playback
-func (a *API) Pause(deviceID string) error {
-	query := make(url.Values)
-	if deviceID != "" {
-		query.Add("device_id", deviceID)
-	}
-
-	return a.put("v1", "/me/player/pause", query, nil)
+func (a *API) Pause() error {
+	return a.put("v1", "/me/player/pause", nil, nil)
 }
 
 // SkipToPreviousTrack skips to the previous track in the user's queue.
