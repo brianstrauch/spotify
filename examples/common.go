@@ -27,7 +27,8 @@ func Login() string {
 		panic(err)
 	}
 
-	uri := spotify.BuildPKCEAuthURI(ClientID, RedirectURI, challenge, state)
+	scopes := []string{spotify.ScopePlaylistReadPrivate, spotify.ScopePlaylistReadCollaborative}
+	uri := spotify.BuildPKCEAuthURI(ClientID, RedirectURI, challenge, state, scopes...)
 
 	if err := browser.OpenURL(uri); err != nil {
 		panic(err)

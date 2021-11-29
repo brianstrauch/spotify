@@ -21,7 +21,7 @@ func main() {
 	}
 
 	playlist := new(spotify.Playlist)
-	if err := playlists[0].Get(api, playlist); err != nil {
+	if err := playlists[0].HREF.Get(api, playlist); err != nil {
 		panic(err)
 	}
 
